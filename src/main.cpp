@@ -436,6 +436,9 @@ int main() {
             int idade;
             cin >> cpf >> idade;
             getline(cin >> ws, nome);
+            if (!nome.empty() && nome.back() == '\r') {
+                nome.pop_back();
+            }
             agencia.cadastrarAstronauta(cpf, nome, idade);
 
         } else if (comando == "CADASTRAR_VOO") {
