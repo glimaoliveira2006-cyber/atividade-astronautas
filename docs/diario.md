@@ -151,13 +151,54 @@ Vou conferir com bash testes/testar.sh missao2 e depois com
 bash testes/testar.sh parte1.
 
 - O plano, resumido:
-- O formato do arquivo (cole cinco linhas do `dados_teste.txt`):
+1. Astronauta ganha restaurarEstado(vivo, disponivel) — sobrescreve esses
+dois campos ao carregar, já que o construtor sempre cria vivo/disponível
+como true.
+2. Voo ganha definirEstado(estado) — restaura estados diferentes de
+"planejado" (o construtor sempre começa como "planejado").
+3. Agencia::salvar(arquivo) grava astronautas (cpf, nome, idade, vivo,
+disponível e histórico de voos) e voos (código, estado como número, CPFs a
+bordo) num arquivo texto; imprime erro se não conseguir abrir o arquivo
+para escrita.
+4. Agencia::carregar(arquivo) lê esse arquivo e reconstrói tudo; só limpa
+os dados atuais depois de confirmar que o arquivo abriu com sucesso — se
+não existir, mantém os dados como estavam. Usa dois métodos auxiliares
+para converter estado texto ↔ número, e getters novos para acessar os
+vetores de astronautas e voos
+5. main() ganha dois comandos novos, SALVAR e CARREGAR, ligados aos
+métodos da Agencia.
+Nenhum comando existente foi alterado.
+- O formato do arquivo (cole cinco linhas do `dados_teste.txt`): 
+OK: astronauta 111 cadastrado
+OK: astronauta 222 cadastrado
+OK: astronauta 333 cadastrado
+OK: voo 10 cadastrado
+OK: voo 20 cadastrado
+
 - Resultado de `testar.sh missao2` e de `testar.sh parte1`:  
-- Precisei refazer? O que mudou no pedido:
+@glimaoliveira2006-cyber ➜ /workspaces/atividade-astronautas (main) $ bash testes/testar.sh missao2
+bash testes/testar.sh parte1
+compilando...
+PASSOU - 01_salvar
+PASSOU - 02_carregar
+PASSOU - 03_arquivo_inexistente
+
+3 de 3 testes passaram
+compilando...
+PASSOU - 01_cadastros
+PASSOU - 02_passageiros_planejados
+PASSOU - 03_lancamento_finalizacao
+PASSOU - 04_explosao_e_mortes
+PASSOU - 05_operacoes_invalidas
+PASSOU - 06_cenario_completo
+
+6 de 6 testes passaram
+
+- Precisei refazer? O que mudou no pedido: sim, eu estava usando o open code baixado no pc e ele estava dando varios erros por não ter acesso diretamente ao projeto, então baixei diretamente aqui no Vs code do git o open code e deu certo 
 
 ## Missão 3: RELATORIO
 
-- Primeira mensagem:
+- Primeira mensagem: 
 - O plano, resumido:
 - Resultado de `testar.sh missao3` e de `testar.sh parte1`:
 - Precisei refazer? O que mudou no pedido:
