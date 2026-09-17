@@ -1,0 +1,200 @@
+[1mdiff --git a/src/main.cpp b/src/main.cpp[m
+[1mindex 78b1fb6..bd7f2bc 100644[m
+[1m--- a/src/main.cpp[m
+[1m+++ b/src/main.cpp[m
+[36m@@ -11,6 +11,7 @@[m [mprivate:[m
+     int idade;[m
+     bool vivo;[m
+     bool disponivel;[m
+[32m+[m[32m    vector<int> voos;[m
+ [m
+ public:[m
+     Astronauta(string cpf, string nome, int idade) {[m
+[36m@@ -55,6 +56,18 @@[m [mpublic:[m
+         vivo = false;[m
+         disponivel = false;[m
+     }[m
+[32m+[m
+[32m+[m[32m    void registrarVoo(int codigo) {[m
+[32m+[m[32m        voos.push_back(codigo);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    int getQuantidadeVoos() {[m
+[32m+[m[32m        return voos.size();[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    int getVoo(int posicao) {[m
+[32m+[m[32m        return voos[posicao];[m
+[32m+[m[32m    }[m
+ };[m
+ [m
+ [m
+[36m@@ -276,6 +289,7 @@[m [mpublic:[m
+             int posAstronauta = buscarAstronauta(cpf);[m
+ [m
+             astronautas[posAstronauta].embarcar();[m
+[32m+[m[32m            astronautas[posAstronauta].registrarVoo(codigo);[m
+         }[m
+ [m
+         voos[posVoo].lancar();[m
+[36m@@ -418,6 +432,139 @@[m [mpublic:[m
+             cout << "(nenhum)" << endl;[m
+         }[m
+     }[m
+[32m+[m
+[32m+[m[32m    void listarAstronautas() {[m
+[32m+[m[32m        cout << "LISTA DE ASTRONAUTAS" << endl;[m
+[32m+[m
+[32m+[m[32m        cout << "== disponiveis ==" << endl;[m
+[32m+[m
+[32m+[m[32m        bool encontrou = false;[m
+[32m+[m
+[32m+[m[32m        for (int i = 0; i < astronautas.size(); i++) {[m
+[32m+[m[32m            if (!astronautas[i].estaVivo()) {[m
+[32m+[m[32m                continue;[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            bool emVoo = false;[m
+[32m+[m
+[32m+[m[32m            for (int j = 0; j < voos.size(); j++) {[m
+[32m+[m[32m                if (voos[j].getEstado() == "em curso" &&[m
+[32m+[m[32m                    voos[j].temAstronauta(astronautas[i].getCpf())) {[m
+[32m+[m
+[32m+[m[32m                    emVoo = true;[m
+[32m+[m[32m                    break;[m
+[32m+[m[32m                }[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            if (!emVoo) {[m
+[32m+[m[32m                encontrou = true;[m
+[32m+[m
+[32m+[m[32m                cout << astronautas[i].getCpf()[m
+[32m+[m[32m                     << " "[m
+[32m+[m[32m                     << astronautas[i].getNome()[m
+[32m+[m[32m                     << " ("[m
+[32m+[m[32m                     << astronautas[i].getIdade()[m
+[32m+[m[32m                     << " anos)"[m
+[32m+[m[32m                     << endl;[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        if (!encontrou) {[m
+[32m+[m[32m            cout << "(nenhum)" << endl;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        cout << "== em voo ==" << endl;[m
+[32m+[m
+[32m+[m[32m        encontrou = false;[m
+[32m+[m
+[32m+[m[32m        for (int i = 0; i < astronautas.size(); i++) {[m
+[32m+[m[32m            if (!astronautas[i].estaVivo()) {[m
+[32m+[m[32m                continue;[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            int codigoVoo = -1;[m
+[32m+[m
+[32m+[m[32m            for (int j = 0; j < voos.size(); j++) {[m
+[32m+[m[32m                if (voos[j].getEstado() == "em curso" &&[m
+[32m+[m[32m                    voos[j].temAstronauta(astronautas[i].getCpf())) {[m
+[32m+[m
+[32m+[m[32m                    codigoVoo = voos[j].getCodigo();[m
+[32m+[m[32m                    break;[m
+[32m+[m[32m                }[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            if (codigoVoo != -1) {[m
+[32m+[m[32m                encontrou = true;[m
+[32m+[m
+[32m+[m[32m                cout << astronautas[i].getCpf()[m
+[32m+[m[32m                     << " "[m
+[32m+[m[32m                     << astronautas[i].getNome()[m
+[32m+[m[32m                     << " ("[m
+[32m+[m[32m                     << astronautas[i].getIdade()[m
+[32m+[m[32m                     << " anos)"[m
+[32m+[m[32m                     << " - voo "[m
+[32m+[m[32m                     << codigoVoo[m
+[32m+[m[32m                     << endl;[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        if (!encontrou) {[m
+[32m+[m[32m            cout << "(nenhum)" << endl;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        cout << "== mortos ==" << endl;[m
+[32m+[m
+[32m+[m[32m        encontrou = false;[m
+[32m+[m
+[32m+[m[32m        for (int i = 0; i < astronautas.size(); i++) {[m
+[32m+[m[32m            if (!astronautas[i].estaVivo()) {[m
+[32m+[m[32m                encontrou = true;[m
+[32m+[m
+[32m+[m[32m                cout << astronautas[i].getCpf()[m
+[32m+[m[32m                     << " "[m
+[32m+[m[32m                     << astronautas[i].getNome()[m
+[32m+[m[32m                     << " ("[m
+[32m+[m[32m                     << astronautas[i].getIdade()[m
+[32m+[m[32m                     << " anos)"[m
+[32m+[m[32m                     << endl;[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        if (!encontrou) {[m
+[32m+[m[32m            cout << "(nenhum)" << endl;[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    void listarHistorico(string cpf) {[m
+[32m+[m[32m        int posAstronauta = buscarAstronauta(cpf);[m
+[32m+[m
+[32m+[m[32m        if (posAstronauta == -1) {[m
+[32m+[m[32m            cout << "ERRO: astronauta " << cpf << " nao cadastrado" << endl;[m
+[32m+[m[32m            return;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        cout << "HISTORICO DE "[m
+[32m+[m[32m             << astronautas[posAstronauta].getCpf()[m
+[32m+[m[32m             << " "[m
+[32m+[m[32m             << astronautas[posAstronauta].getNome()[m
+[32m+[m[32m             << endl;[m
+[32m+[m
+[32m+[m[32m        if (astronautas[posAstronauta].getQuantidadeVoos() == 0) {[m
+[32m+[m[32m            cout << "(nenhum voo)" << endl;[m
+[32m+[m[32m            return;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        for (int i = 0; i < astronautas[posAstronauta].getQuantidadeVoos(); i++) {[m
+[32m+[m[32m            int codigo = astronautas[posAstronauta].getVoo(i);[m
+[32m+[m[32m            int posVoo = buscarVoo(codigo);[m
+[32m+[m
+[32m+[m[32m            cout << "voo "[m
+[32m+[m[32m                 << codigo[m
+[32m+[m[32m                 << ": "[m
+[32m+[m[32m                 << voos[posVoo].getEstado()[m
+[32m+[m[32m                 << endl;[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+ };[m
+ [m
+ [m
+[36m@@ -477,10 +624,18 @@[m [mint main() {[m
+         } else if (comando == "LISTAR_MORTOS") {[m
+             agencia.listarMortos();[m
+ [m
+[32m+[m[32m        } else if (comando == "LISTAR_ASTRONAUTAS") {[m
+[32m+[m[32m            agencia.listarAstronautas();[m
+[32m+[m
+[32m+[m[32m        } else if (comando == "HISTORICO") {[m
+[32m+[m[32m            string cpf;[m
+[32m+[m[32m            cin >> cpf;[m
+[32m+[m[32m            agencia.listarHistorico(cpf);[m
+[32m+[m
+         } else {[m
+             cout << "ERRO: comando desconhecido " << comando << endl;[m
+         }[m
+     }[m
+ [m
+     return 0;[m
+[31m-}[m
+[32m+[m[32m}[m
+\ No newline at end of file[m

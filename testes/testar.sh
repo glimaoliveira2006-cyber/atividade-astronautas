@@ -13,10 +13,10 @@ if [ -z "$ALVO" ]; then
 fi
 
 case "$ALVO" in
-    parte1) PASTA="testes/missão1/parte1" ;;
-    missao1) PASTA="testes/missão1" ;;
-    missao2) PASTA="testes/missão1/missão2" ;;
-    missao3) PASTA="testes/missão1/missão3" ;;
+    parte1) PASTA="testes/parte1" ;;
+    missao1) PASTA="testes/missao1" ;;
+    missao2) PASTA="testes/missao2" ;;
+    missao3) PASTA="testes/missao3" ;;
     *) echo "alvo desconhecido: $ALVO"; exit 1 ;;
 esac
 
