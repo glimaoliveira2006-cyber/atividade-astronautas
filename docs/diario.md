@@ -198,7 +198,41 @@ PASSOU - 06_cenario_completo
 
 ## Missão 3: RELATORIO
 
-- Primeira mensagem: 
+- Primeira mensagem: Este programa em C++11 controla astronautas e voos de uma agência espacial.
+Ele lê comandos da entrada padrão. As classes Astronauta, Voo e Agencia estão
+em src/main.cpp. Os testes em testes/parte1, testes/missao1 e testes/missao2
+passam.
+Quero um comando novo: RELATORIO. Ele imprime a linha RELATORIO seguida de
+nove linhas sobre o estado atual, neste formato exato:
+RELATORIO
+voos planejados: 0
+voos em curso: 0
+voos finalizados com sucesso: 1
+voos finalizados com explosao: 2
+astronautas cadastrados: 4
+astronautas vivos: 2
+astronautas mortos: 2
+astronauta mais experiente: 111 Ana Maria (voos lancados: 1)
+taxa de sucesso: 33%
+Regras:
+- A experiência de um astronauta é o número de voos já lançados em que ele
+estava a bordo. Voo ainda planejado não conta. Astronauta morto continua
+contando. Em caso de empate, vale o cadastrado primeiro. Se ninguém voou:
+astronauta mais experiente: (nenhum).
+- Taxa de sucesso é a parte inteira de sucessos * 100 / finalizados, onde
+finalizados são os com sucesso mais os com explosão. Sem voos finalizados:
+taxa de sucesso: (nenhum voo finalizado).
+Isso precisa funcionar corretamente também depois de um CARREGAR (ou seja,
+os dados usados no relatório devem vir do estado real dos astronautas e
+voos, não de contadores separados que poderiam ficar desatualizados)
+Antes de editar, me diga quais arquivos e métodos você vai criar ou alterar,
+e por quê, e como vai calcular a experiência de cada astronauta (guardando
+um contador, ou contando os voos lançados a cada chamada do relatório).
+Não mude nenhum comando que já existe nem a saída deles. Não use nada fora
+da biblioteca padrão.
+Vou conferir com bash testes/testar.sh missao3 e depois com
+bash testes/testar.sh parte1.
+
 - O plano, resumido:
 - Resultado de `testar.sh missao3` e de `testar.sh parte1`:
 - Precisei refazer? O que mudou no pedido:
