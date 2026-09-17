@@ -150,6 +150,22 @@ private:
         return -1;
     }
 
+    int buscarVooPlanejado(int codigo) {
+        int pos = buscarVoo(codigo);
+
+        if (pos == -1) {
+            cout << "ERRO: voo " << codigo << " nao cadastrado" << endl;
+            return -1;
+        }
+
+        if (voos[pos].getEstado() != "planejado") {
+            cout << "ERRO: voo " << codigo << " nao esta planejado" << endl;
+            return -1;
+        }
+
+        return pos;
+    }
+
 public:
     void cadastrarAstronauta(string cpf, string nome, int idade) {
         if (buscarAstronauta(cpf) != -1) {
@@ -183,15 +199,9 @@ public:
             return;
         }
 
-        int posVoo = buscarVoo(codigo);
+        int posVoo = buscarVooPlanejado(codigo);
 
         if (posVoo == -1) {
-            cout << "ERRO: voo " << codigo << " nao cadastrado" << endl;
-            return;
-        }
-
-        if (voos[posVoo].getEstado() != "planejado") {
-            cout << "ERRO: voo " << codigo << " nao esta planejado" << endl;
             return;
         }
 
@@ -218,15 +228,9 @@ public:
             return;
         }
 
-        int posVoo = buscarVoo(codigo);
+        int posVoo = buscarVooPlanejado(codigo);
 
         if (posVoo == -1) {
-            cout << "ERRO: voo " << codigo << " nao cadastrado" << endl;
-            return;
-        }
-
-        if (voos[posVoo].getEstado() != "planejado") {
-            cout << "ERRO: voo " << codigo << " nao esta planejado" << endl;
             return;
         }
 
@@ -241,15 +245,9 @@ public:
     }
 
     void lancarVoo(int codigo) {
-        int posVoo = buscarVoo(codigo);
+        int posVoo = buscarVooPlanejado(codigo);
 
         if (posVoo == -1) {
-            cout << "ERRO: voo " << codigo << " nao cadastrado" << endl;
-            return;
-        }
-
-        if (voos[posVoo].getEstado() != "planejado") {
-            cout << "ERRO: voo " << codigo << " nao esta planejado" << endl;
             return;
         }
 
