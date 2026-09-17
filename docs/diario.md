@@ -51,17 +51,84 @@ Descobri que repetir o mesmo código em várias funções dá para evitar: se tr
 ## Missão 1: LISTAR_ASTRONAUTAS e HISTORICO
 
 - Primeira mensagem (o pedido do plano):
+Pedi dois comandos novos, sem deixar a IA editar ainda.
+LISTAR_ASTRONAUTAS: mostra os astronautas em três grupos, na ordem de
+cadastro — "disponiveis" (vivos fora de voo), "em voo" (vivos em voo em
+curso, com o código do voo) e "mortos". Grupo vazio mostra (nenhum). Passei
+o formato exato:
+LISTA DE ASTRONAUTAS
+== disponiveis ==
+333 Carla Souza (28 anos)
+== em voo ==
+111 Ana Maria (30 anos) - voo 20
+== mortos ==
+222 Bruno Costa (35 anos)
+HISTORICO cpf: mostra os voos em que o astronauta participou (voo lançado
+com ele a bordo; só planejado não conta), com o estado atual de cada um, na
+ordem de cadastro dos voos. Sem voos: (nenhum voo). CPF desconhecido: ERRO:
+astronauta 999 nao cadastrado. Formato exato:
+HISTORICO DE 111 Ana Maria
+voo 10: finalizado com sucesso
+voo 20: em curso
+Pedi para não mudar nenhum comando existente nem usar nada fora da
+biblioteca padrão, e que ela me dissesse o plano (arquivos e métodos que ia
+criar ou alterar, e por quê) antes de editar qualquer coisa.
+
 - O plano que a IA apresentou, resumido:
-- Mudei algo no plano antes de liberar?
-- Resultado de `testar.sh missao1` e de `testar.sh parte1`:
-- Precisei refazer? O que mudou no pedido:
+
+1. Astronauta ganha um campo novo vector<int> voos (histórico) e métodos
+registrarVoo(codigo), getQuantidadeVoos() e getVoo(posicao). Motivo: "participou"
+só conta se o voo foi lançado, então precisa gravar no momento do lançamento
+(não dá pra calcular depois, senão o voo 30 do teste 02, que ficou só
+planejado, apareceria errado).
+2. Em Agencia::lancarVoo, no laço que chama embarcar() de cada astronauta,
+adiciona também astronautas[pos].registrarVoo(codigo).
+3. Novo método Agencia::listarAstronautas(): separa em disponiveis (vivo,
+fora de voo em curso), em voo (vivo, achando o voo em curso dele) e mortos.
+Grupo vazio mostra (nenhum).
+4. Novo método Agencia::listarHistorico(cpf): CPF desconhecido dá erro;
+senão lista os voos gravados no astronauta com o estado atual de cada um;
+sem voos mostra (nenhum voo).
+5. Em main(), liga os comandos LISTAR_ASTRONAUTAS e HISTORICO aos métodos
+novos.
+Nenhum comando existente muda.
+
+- Mudei algo no plano antes de liberar? não 
+- Resultado de `testar.sh missao1` e de `testar.sh parte1`: 
+@glimaoliveira2006-cyber ➜ /workspaces/atividade-astronautas (main) $ bash testes/testar.sh missao1
+bash testes/testar.sh parte1
+compilando...
+PASSOU - 01_listar_astronautas
+PASSOU - 02_historico
+
+2 de 2 testes passaram
+compilando...
+PASSOU - 01_cadastros
+PASSOU - 02_passageiros_planejados
+PASSOU - 03_lancamento_finalizacao
+PASSOU - 04_explosao_e_mortes
+PASSOU - 05_operacoes_invalidas
+PASSOU - 06_cenario_completo
+
+6 de 6 testes passaram
+
+- Precisei refazer? O que mudou no pedido: Precisei refazer? O que mudou no pedido:
+Não precisei pedir de novo pra IA, o códigoestava certo desde a
+primeira vez. O problema foi na organização dos testes, a IA criou a pasta
+como "missão1" (com acento) e ainda colocou "parte1", "missão2" e "missão3"
+aninhadas dentro dela, em vez de soltas em testes/. Além disso, os arquivos
+.out vieram com fim de linha do Windows (\r\n), então os testes falhavam
+mesmo com a saída aparentemente igual. Descobri isso comparando os bytes
+com xxd. Corrigi na mão e movi as pastas pro lugar certo, ajustei os
+caminhos no testar.sh e limpei o \r com sed. Depois disso, tudo passou sem
+tocar no código.
 
 ## Missão 2: SALVAR e CARREGAR
 
 - Primeira mensagem:
 - O plano, resumido:
 - O formato do arquivo (cole cinco linhas do `dados_teste.txt`):
-- Resultado de `testar.sh missao2` e de `testar.sh parte1`:
+- Resultado de `testar.sh missao2` e de `testar.sh parte1`:  
 - Precisei refazer? O que mudou no pedido:
 
 ## Missão 3: RELATORIO
