@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -565,6 +566,136 @@ public:
                  << endl;
         }
     }
+
+    void salvar(string nomeArquivo) {
+        ofstream arquivo(nomeArquivo);
+
+        if (!arquivo) {
+            cout << "ERRO: nao foi possivel salvar em " << nomeArquivo << endl;
+            return;
+        }
+
+        arquivo << "ASTRONAUTAS " << astronautas.size() << endl;
+
+        for (int i = 0; i < astronautas.size(); i++) {
+            arquivo << astronautas[i].getCpf() << endl;
+            arquivo << astronautas[i].getNome() << endl;
+            arquivo << astronautas[i].getIdade() << endl;
+            arquivo << astronautas[i].estaVivo() << " " << astronautas[i].estaDisponivel() << endl;
+            arquivo << astronautas[i].getQuantidadeVoos() << endl;
+
+            for (int j = 0; j < astronautas[i].getQuantidadeVoos(); j++) {
+                arquivo << astronautas[i].getVoo(j) << endl;
+            }
+        }
+
+        arquivo << "VOOS " << voos.size() << endl;
+
+        for (int i = 0; i < voos.size(); i++) {
+            arquivo << voos[i].getCodigo() << endl;
+            arquivo << voos[i].getEstado() << endl;
+            arquivo << voos[i].getQuantidadeAstronautas() << endl;
+
+            for (int j = 0; j < voos[i].getQuantidadeAstronautas(); j++) {
+                arquivo << voos[i].getCpf(j) << endl;
+            }
+        }
+
+        arquivo.close();
+
+        cout << "OK: dados salvos em " << nomeArquivo << endl;
+    }
+
+    void carregar(string nomeArquivo) {
+        ifstream arquivo(nomeArquivo);
+
+        if (!arquivo) {
+            cout << "ERRO: nao foi possivel carregar de " << nomeArquivo << endl;
+            return;
+        }
+
+        string rotulo;
+        int quantidade;
+
+        arquivo >> rotulo >> quantidade;
+
+        if (arquivo.fail()) {
+            cout << "ERRO: nao foi possivel carregar de " << nomeArquivo << endl;
+            return;
+        }
+
+        vector<Astronauta> novosAstronautas;
+
+        for (int i = 0; i < quantidade; i++) {
+            string cpf, nome;
+            int idade, vivo, disponivel, nvoos;
+
+            arquivo >> cpf;
+            getline(arquivo >> ws, nome);
+            arquivo >> idade;
+            arquivo >> vivo >> disponivel;
+            arquivo >> nvoos;
+
+            Astronauta astronauta(cpf, nome, idade);
+
+            if (!vivo) {
+                astronauta.morrer();
+            } else if (!disponivel) {
+                astronauta.embarcar();
+            }
+
+            for (int j = 0; j < nvoos; j++) {
+                int codigo;
+                arquivo >> codigo;
+                astronauta.registrarVoo(codigo);
+            }
+
+            novosAstronautas.push_back(astronauta);
+        }
+
+        arquivo >> rotulo >> quantidade;
+
+        if (arquivo.fail()) {
+            cout << "ERRO: nao foi possivel carregar de " << nomeArquivo << endl;
+            return;
+        }
+
+        vector<Voo> novosVoos;
+
+        for (int i = 0; i < quantidade; i++) {
+            int codigo, ncpfs;
+            string estado;
+
+            arquivo >> codigo;
+            getline(arquivo >> ws, estado);
+            arquivo >> ncpfs;
+
+            Voo voo(codigo);
+
+            for (int j = 0; j < ncpfs; j++) {
+                string cpf;
+                arquivo >> cpf;
+                voo.adicionarAstronauta(cpf);
+            }
+
+            if (estado == "em curso") {
+                voo.lancar();
+            } else if (estado == "finalizado com sucesso") {
+                voo.lancar();
+                voo.finalizar();
+            } else if (estado == "finalizado com explosao") {
+                voo.lancar();
+                voo.explodir();
+            }
+
+            novosVoos.push_back(voo);
+        }
+
+        astronautas = novosAstronautas;
+        voos = novosVoos;
+
+        cout << "OK: dados carregados de " << nomeArquivo << endl;
+    }
 };
 
 
@@ -631,6 +762,16 @@ int main() {
             string cpf;
             cin >> cpf;
             agencia.listarHistorico(cpf);
+
+        } else if (comando == "SALVAR") {
+            string nomeArquivo;
+            cin >> nomeArquivo;
+            agencia.salvar(nomeArquivo);
+
+        } else if (comando == "CARREGAR") {
+            string nomeArquivo;
+            cin >> nomeArquivo;
+            agencia.carregar(nomeArquivo);
 
         } else {
             cout << "ERRO: comando desconhecido " << comando << endl;

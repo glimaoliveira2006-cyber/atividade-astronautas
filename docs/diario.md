@@ -126,6 +126,30 @@ tocar no código.
 ## Missão 2: SALVAR e CARREGAR
 
 - Primeira mensagem:
+Este programa em C++11 controla astronautas e voos de uma agência espacial.
+Ele lê comandos da entrada padrão. As classes Astronauta, Voo e Agencia estão
+em src/main.cpp. Os testes em testes/parte1 e testes/missao1 passam.
+Quero dois comandos novos: SALVAR nome_do_arquivo e CARREGAR nome_do_arquivo.
+SALVAR nome_do_arquivo grava todos os dados atuais (astronautas e voos) em um
+arquivo de texto e imprime OK: dados salvos em nome_do_arquivo. Se não
+conseguir abrir o arquivo para escrita: ERRO: nao foi possivel salvar em
+nome_do_arquivo.
+CARREGAR nome_do_arquivo substitui todos os dados atuais pelos do arquivo e
+imprime OK: dados carregados de nome_do_arquivo. Se o arquivo não existir:
+ERRO: nao foi possivel carregar de nome_do_arquivo, e os dados atuais
+continuam como estavam.
+O formato do arquivo é livre, desde que carregar depois de salvar reconstrua
+tudo corretamente: astronautas com nome, idade, se está vivo e se está
+disponível, e também o histórico de voos que registrei na Missão 1; voos com
+código, estado e lista de CPFs a bordo.
+Antes de editar, me mostre o formato do arquivo com um exemplo, explique como
+o programa reconstrói os objetos ao ler, e me diga quais arquivos e métodos
+você vai criar ou alterar, e por quê.
+Não mude nenhum comando que já existe nem a saída deles. Não use nada fora da
+biblioteca padrão.
+Vou conferir com bash testes/testar.sh missao2 e depois com
+bash testes/testar.sh parte1.
+
 - O plano, resumido:
 - O formato do arquivo (cole cinco linhas do `dados_teste.txt`):
 - Resultado de `testar.sh missao2` e de `testar.sh parte1`:  
