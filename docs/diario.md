@@ -234,8 +234,36 @@ Vou conferir com bash testes/testar.sh missao3 e depois com
 bash testes/testar.sh parte1.
 
 - O plano, resumido:
+- Criou o método `Agencia::relatorio()` em `src/main.cpp`, posicionado entre `listarHistorico` e `salvar`
+- Conta voos por estado (planejado, em curso, finalizado com sucesso, finalizado com explosao) varrendo o vetor `voos`
+- Conta vivos/mortos varrendo `astronautas`
+- Calcula experiência de cada astronauta usando `getQuantidadeVoos()` (já existente): mortos continuam contando, empate mantém o primeiro cadastrado, ninguém voou → `(nenhum)`
+- Calcula taxa de sucesso = parte inteira de `sucesso*100/(sucesso+explosao)`; sem finalizados → `(nenhum voo finalizado)`
+- No `main()`, o comando `RELATORIO` passou a chamar `agencia.relatorio()`
+- Nenhum comando existente foi alterado, e só usou biblioteca padrão
+
+
 - Resultado de `testar.sh missao3` e de `testar.sh parte1`:
-- Precisei refazer? O que mudou no pedido:
+@glimaoliveira2006-cyber ➜ /workspaces/atividade-astronautas (main) $ bash testes/testar.sh missao3 && bash testes/testar.sh parte1
+compilando...
+PASSOU - 01_relatorio_vazio
+PASSOU - 02_relatorio_cenario
+PASSOU - 03_relatorio_empate
+PASSOU - 04_salvar_para_relatorio
+PASSOU - 05_relatorio_apos_carregar
+
+5 de 5 testes passaram
+compilando...
+PASSOU - 01_cadastros
+PASSOU - 02_passageiros_planejados
+PASSOU - 03_lancamento_finalizacao
+PASSOU - 04_explosao_e_mortes
+PASSOU - 05_operacoes_invalidas
+PASSOU - 06_cenario_completo
+
+6 de 6 testes passaram
+
+- Precisei refazer? O que mudou no pedido: não 
 
 ## Missão 4: livre
 
