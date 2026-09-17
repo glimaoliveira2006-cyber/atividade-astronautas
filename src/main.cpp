@@ -1,5 +1,7 @@
 #include <fstream>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -76,12 +78,14 @@ class Voo {
 private:
     int codigo;
     string estado;
+    string destino;
     vector<string> cpfs;
 
 public:
     Voo(int codigo) {
         this->codigo = codigo;
         estado = "planejado";
+        destino = "";
     }
 
     int getCodigo() {
@@ -90,6 +94,14 @@ public:
 
     string getEstado() {
         return estado;
+    }
+
+    string getDestino() {
+        return destino;
+    }
+
+    void definirDestino(string destino) {
+        this->destino = destino;
     }
 
     int getQuantidadeAstronautas() {
@@ -139,10 +151,42 @@ public:
 };
 
 
+class Planeta {
+private:
+    string nome;
+    double distanciaKm;
+    int voosLancados;
+
+public:
+    Planeta(string nome, double distanciaKm) {
+        this->nome = nome;
+        this->distanciaKm = distanciaKm;
+        voosLancados = 0;
+    }
+
+    string getNome() {
+        return nome;
+    }
+
+    double getDistancia() {
+        return distanciaKm;
+    }
+
+    int getVoosLancados() {
+        return voosLancados;
+    }
+
+    void registrarLancamento() {
+        voosLancados++;
+    }
+};
+
+
 class Agencia {
 private:
     vector<Astronauta> astronautas;
     vector<Voo> voos;
+    vector<Planeta> planetas;
 
     int buscarAstronauta(string cpf) {
         for (int i = 0; i < astronautas.size(); i++) {
@@ -157,6 +201,16 @@ private:
     int buscarVoo(int codigo) {
         for (int i = 0; i < voos.size(); i++) {
             if (voos[i].getCodigo() == codigo) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    int buscarPlaneta(string nome) {
+        for (int i = 0; i < planetas.size(); i++) {
+            if (planetas[i].getNome() == nome) {
                 return i;
             }
         }
@@ -203,6 +257,69 @@ public:
         voos.push_back(voo);
 
         cout << "OK: voo " << codigo << " cadastrado" << endl;
+    }
+
+    void cadastrarPlaneta(string nome, double distanciaKm) {
+        if (buscarPlaneta(nome) != -1) {
+            cout << "ERRO: planeta ja cadastrado" << endl;
+            return;
+        }
+
+        Planeta planeta(nome, distanciaKm);
+        planetas.push_back(planeta);
+
+        cout << "OK: planeta cadastrado" << endl;
+    }
+
+    void definirDestino(int codigo, string nomePlaneta) {
+        int posVoo = buscarVoo(codigo);
+
+        if (posVoo == -1) {
+            cout << "ERRO: voo " << codigo << " nao cadastrado" << endl;
+            return;
+        }
+
+        int posPlaneta = buscarPlaneta(nomePlaneta);
+
+        if (posPlaneta == -1) {
+            cout << "ERRO: planeta " << nomePlaneta << " nao cadastrado" << endl;
+            return;
+        }
+
+        if (voos[posVoo].getEstado() != "planejado") {
+            cout << "ERRO: voo " << codigo << " nao esta planejado" << endl;
+            return;
+        }
+
+        voos[posVoo].definirDestino(nomePlaneta);
+
+        cout << "OK: destino de " << codigo << " definido para " << nomePlaneta << endl;
+    }
+
+    void listarPlanetas() {
+        cout << "LISTA DE PLANETAS" << endl;
+
+        if (planetas.size() == 0) {
+            cout << "(nenhum)" << endl;
+            return;
+        }
+
+        for (int i = 0; i < planetas.size(); i++) {
+            cout << planetas[i].getNome() << " - ";
+
+            ostringstream distancia;
+
+            if (planetas[i].getDistancia() == (double)(long long)planetas[i].getDistancia()) {
+                distancia << (long long)planetas[i].getDistancia();
+            } else {
+                distancia << fixed << setprecision(1) << planetas[i].getDistancia();
+            }
+
+            cout << distancia.str()
+                 << " km - voos lancados: "
+                 << planetas[i].getVoosLancados()
+                 << endl;
+        }
     }
 
     void adicionarAstronauta(string cpf, int codigo) {
@@ -294,6 +411,16 @@ public:
         }
 
         voos[posVoo].lancar();
+
+        string destino = voos[posVoo].getDestino();
+
+        if (!destino.empty()) {
+            int posPlaneta = buscarPlaneta(destino);
+
+            if (posPlaneta != -1) {
+                planetas[posPlaneta].registrarLancamento();
+            }
+        }
 
         cout << "OK: voo " << codigo << " lancado" << endl;
     }
@@ -796,6 +923,21 @@ int main() {
             int codigo;
             cin >> codigo;
             agencia.cadastrarVoo(codigo);
+
+        } else if (comando == "CADASTRAR_PLANETA") {
+            string nome;
+            double distanciaKm;
+            cin >> nome >> distanciaKm;
+            agencia.cadastrarPlaneta(nome, distanciaKm);
+
+        } else if (comando == "DEFINIR_DESTINO") {
+            int codigo;
+            string nomePlaneta;
+            cin >> codigo >> nomePlaneta;
+            agencia.definirDestino(codigo, nomePlaneta);
+
+        } else if (comando == "LISTAR_PLANETAS") {
+            agencia.listarPlanetas();
 
         } else if (comando == "ADICIONAR_ASTRONAUTA") {
             string cpf;
