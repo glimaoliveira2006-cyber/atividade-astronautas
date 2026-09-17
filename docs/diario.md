@@ -267,17 +267,69 @@ PASSOU - 06_cenario_completo
 
 ## Missão 4: livre
 
-- O que escolhi e por quê:
+- O que escolhi e por quê: Escolhi criar um catálogo de planetas como destino dos voos, porque adiciona uma classe nova (Planeta) e conecta com o restante do sistema (Voo e Agencia)
+
 - O comando novo, a saída que eu esperava e o nome do meu arquivo de comandos
-  (escritos antes de pedir):
+  (escritos antes de pedir): Comandos novos= CADASTRAR_PLANETA nome distancia_km, DEFINIR_DESTINO codigo nome_planeta e LISTAR_PLANETAS.
+
 - Primeira mensagem:
-- O que veio, comparado com o que eu esperava:
-- `testar.sh parte1` continuou passando?
-- Aceitei, ajustei ou descartei? Por quê:
+Este programa em C++11 controla astronautas e voos de uma agência espacial.
+Ele lê comandos da entrada padrão. As classes Astronauta, Voo e Agencia estão
+em src/main.cpp. Os testes em testes/parte1, testes/missao1, testes/missao2
+e testes/missao3 passam.
+Quero adicionar uma nova classe Planeta e três comandos novos, sem alterar
+nenhum comando existente. Segue a especificação exata.
+Classe Planeta (nova):
+- Atributos privados: nome (string), distanciaKm (double), voosLancados (int).
+- Construtor recebe nome e distanciaKm; voosLancados comeca em 0.
+- Getters: getNome(), getDistancia(), getVoosLancados().
+- Metodo registrarLancamento() incrementa voosLancados.
+Na classe Voo, adicionar um atributo destino (string, vazio por padrao) e um
+getter getDestino(). O construtor de Voo NAO muda de assinatura; destino
+comeca vazio e so e definido pelo comando DEFINIR_DESTINO.
+Comandos novos na Agencia:
+CADASTRAR_PLANETA nome distancia_km
+- ERRO: planeta ja cadastrado
+- OK: planeta cadastrado
+DEFINIR_DESTINO codigo nome_planeta
+- ERRO: voo 10 nao cadastrado
+- ERRO: planeta X nao cadastrado
+- ERRO: voo 10 nao esta planejado
+- OK: destino de 10 definido para X
+LSTAR_PLANETAS
+- Mostra todos os planetas na ordem de cadastro, com nome, distancia e
+  quantidade de voos ja lancados para la. Sem planetas: (nenhum).
+  Formato sugerido:
+  LISTA DE PLANETAS
+  Marte - 225000000 km - voos lancados: 2
+Regra adicional em LANCAR_VOO: se o voo tiver destino definido, chame
+planeta.registrarLancamento() no planeta correspondente quando o voo for
+lancado com sucesso pelas validacoes que ja existem. Se o voo NAO tiver
+destino definido, o lancamento continua funcionando normalmente, sem erro
+novo algum.
+O que nao pode mudar: nenhum comando existente (CADASTRAR_VOO, LANCAR_VOO,
+LISTAR_VOOS, etc.) pode mudar de assinatura ou de saida para os casos que
+ja existiam antes. Um voo sem destino definido tem que continuar sendo
+lancado exatamente como hoje.
+Nao use nada fora da biblioteca padrao.
+Vou conferir rodando um arquivo de comandos que eu mesmo vou criar, e depois
+bash testes/testar.sh parte1, bash testes/testar.sh missao1,
+bash testes/testar.sh missao2 e bash testes/testar.sh missao3, pra garantir
+que nada quebrou.
+Antes de editar, me diga quais arquivos e quais metodos voce vai criar ou
+alterar, e por que.
+
+- O que veio, comparado com o que eu esperava: O código veio exatamente como eu esperava: os três comandos novos (CADASTRAR_PLANETA, DEFINIR_DESTINO, LISTAR_PLANETAS) funcionaram com a saída certinha, o contador de voos lançados incrementou corretamente ao lançar um voo com destino, e o erro de planeta não cadastrado apareceu na mensagem esperada. Nenhum comando antigo quebrou (parte1, missao1, missao2 e missao3 continuaram passando).
+
+- `testar.sh parte1` continuou passando? sim 
+
+- Aceitei, ajustei ou descartei? Por quê: aceitei, está cumprindo tudo que eu esperava
 
 ## Fechamento
 
-- O que a IA fez que eu não conseguiria fazer sozinho nesse prazo:
-- Onde ela errou ou fez algo que eu não pedi:
-- O que eu faria diferente da próxima vez:
+- O que a IA fez que eu não conseguiria fazer sozinho nesse prazo: trabalhar com terminal, ela facilitou muito me dando os comandos que me evitaram fazer tudo manualmente 
+
+- Onde ela errou ou fez algo que eu não pedi: ela errou quando eu estava usando o opencode fora do vs code do git, pela falta de integração com o arquivo completo do projeto, sempre vinha com erros no local ou pasta do arquivo 
+
+- O que eu faria diferente da próxima vez: iniciaria desdo inicio com uma IA instalada aqui no espaço de codigo
 >>>>>>> 06660cd (Parte 1 inicial)
