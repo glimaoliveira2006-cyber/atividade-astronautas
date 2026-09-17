@@ -38,9 +38,15 @@ Aprendi a organizar melhor minhas ideias para resolver os problemas e a usar com
 ## Primeiro contato: revisão sem editar
 
 - As três melhorias que a IA sugeriu, em uma linha cada:
-- A que escolhi e por quê:
-- O que mudou no código, e se os seis testes continuaram passando:
+1)Trocar string estado por enum (evita erros de digitação); 2) criar o auxiliar buscarVooPlanejado  3) separar o código em arquivos
+
+- A que escolhi e por quê: 
+2) criar o auxiliar de buscarvooplanejado e o motivo foi por que ela cria uma função auxiliar que junta duas checagens repetidas: "o voo existe?" e "está planejado?". Antes, `adicionarAstronauta`, `removerAstronauta` e `lancarVoo` repetiam as mesmas linhas de erro três vezes. Agora o código fica menor, mais fácil de ler, e qualquer correção nessa regra é feita em um só lugar.
+
+- O que mudou no código, e se os seis testes continuaram passando: O código mudou só em um ponto: criei `buscarVooPlanejado`, uma função que verifica se o voo existe e se está planejado. Três funções que repetiam esse check (`adicionarAstronauta`, `removerAstronauta`, `lancarVoo`) agora chama só ela. Comportamento e saída continuam iguais. e os seis testes continuaram passando 
+
 - O que entendi que não sabia antes:
+Descobri que repetir o mesmo código em várias funções dá para evitar: se três funções fazem a mesma pergunta ("o voo existe?" e "está planejado?"), eu posso criar uma função auxiliar que cuida disso para mim. Aí o código fica mais curto, mais fácil de ler, e se a regra mudar, eu corrijo em um lugar só.
 
 ## Missão 1: LISTAR_ASTRONAUTAS e HISTORICO
 
